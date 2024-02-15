@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .parent {
+            display: grid;
+            height: 100%;
+        }
+        .background {
+            position: relative;
+            max-width: 100%;
+            max-height: 100vh;
+            margin: auto;
+        }
+        .fighterLeft {
+            position: absolute;
+            bottom: 90px;
+            left: 30px;
+            height: 70%;
+        }
+        .fighterRight {
+            position: absolute;
+            bottom: 90px;
+            right: 30px;
+            height: 70%;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript">
+        function onLoad() {
+            var backgroundImageName;
+            var fighterLeftImageName;
+            var fighterRightImageName;
+            $.ajax({
+                async: false,
+                url: "image/list",
+                success: function( result ) {
+                    console.log("result = " + result);
+                    const data = JSON.parse(result);
+
+                        backgroundImageName = data.background;
+                        fighterLeftImageName = data.fighterLeft;
+                        fighterRightImageName = data.fighterRight;
+
+                }
+            });
+
+            var background = document.getElementById("background");
+            background.src = "image/" + backgroundImageName;
+
+            var fighterLeft = document.getElementById("fighterLeft");
+            fighterLeft.src = "image/" + fighterLeftImageName;
+
+            const fighterRight = document.getElementById("fighterRight");
+            fighterRight.src = "image/" + fighterRightImageName;
+        }
+        setInterval(onLoad, 1000);
+    </script>
+</head>
+<body onload="onLoad();">
+<div class="parent">
+    <img id="background" class="background"/>
+    <img id="fighterLeft" class="fighterLeft"/>
+    <img id="fighterRight" class="fighterRight"/>
+</div>
+</body>
+</html>

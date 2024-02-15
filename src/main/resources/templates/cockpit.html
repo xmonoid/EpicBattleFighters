@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring Demo Project</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript">
+        function setNewImages() {
+            const leftSelect = document.getElementById("fighterLeft");
+            const left = leftSelect.options[leftSelect.selectedIndex].text;
+
+            const rightSelect = document.getElementById("fighterRight");
+            const right = rightSelect.options[rightSelect.selectedIndex].text;
+            $.post({
+                url: "image/change?left=" + left + "&right=" + right
+            });
+        }
+    </script>
+</head>
+<body>
+<h1>Show fighter on the board</h1>
+<label for="fighterLeft">Choose the left fighter:</label>
+<select class="form-control" id="fighterLeft">
+    <option value="0">Nobody</option>
+    <option th:each="option : ${options}" th:value="${option}" th:text="${option}"></option>
+</select>
+<p>
+<label for="fighterRight">Choose the right fighter:</label>
+<select class="form-control" id="fighterRight">
+    <option value="0">Nobody</option>
+    <option th:each="option : ${options}" th:value="${option}" th:text="${option}"></option>
+</select>
+<p>
+<button type="button" onclick="setNewImages()">Show selected</button>
+</body>
+</html>
