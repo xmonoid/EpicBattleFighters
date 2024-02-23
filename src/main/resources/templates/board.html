@@ -35,6 +35,16 @@
             right: 30px;
             height: 70%;
         }
+        #left-winner {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+        #right-winner {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+        }
     </style>
     <script th:src="@{/js/jquery-3.7.1.min.js}" type="text/javascript"></script>
     <script type="text/javascript">
@@ -42,6 +52,8 @@
             var backgroundImageName;
             var fighterLeftImageName;
             var fighterRightImageName;
+            var leftWins = false;
+            var rightWins = false;
             $.ajax({
                 async: false,
                 url: "image/list",
@@ -52,7 +64,8 @@
                         backgroundImageName = data.background;
                         fighterLeftImageName = data.fighterLeft;
                         fighterRightImageName = data.fighterRight;
-
+                        leftWins = data.leftWins;
+                        rightWins = data.rightWins;
                 }
             });
 
@@ -64,6 +77,20 @@
 
             const fighterRight = document.getElementById("fighterRight");
             fighterRight.src = "image/" + fighterRightImageName;
+
+            const leftWinner = document.getElementById("left-winner");
+            if (leftWins) {
+                leftWinner.src = "image/Winner"
+            } else {
+                leftWinner.src = "image/Nobody"
+            }
+
+            const rightWinner = document.getElementById("right-winner");
+            if (rightWins) {
+                rightWinner.src = "image/Winner"
+            } else {
+                rightWinner.src = "image/Nobody"
+            }
         }
         setInterval(onLoad, 1000);
     </script>
@@ -71,7 +98,9 @@
 <body onload="onLoad();">
 <div class="parent">
     <img id="background" class="background"/>
+    <img id="left-winner" class="winner"/>
     <img id="fighterLeft" class="fighterLeft"/>
+    <img id="right-winner" class="winner"/>
     <img id="fighterRight" class="fighterRight"/>
 </div>
 </body>

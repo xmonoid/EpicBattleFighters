@@ -16,6 +16,25 @@
                 url: "image/change?left=" + left + "&right=" + right
             });
         }
+        function setWinner(who) {
+            switch (who) {
+                case "left":
+                    $.post({
+                        url: "image/winner/left"
+                    });
+                    break;
+                case "right":
+                    $.post({
+                        url: "image/winner/right"
+                    });
+                    break;
+                case "cancel":
+                    $.post({
+                        url: "image/winner/cancel"
+                    });
+                    break;
+            }
+        }
     </script>
 </head>
 <body>
@@ -33,5 +52,10 @@
 </select>
 <p>
 <button type="button" onclick="setNewImages()">Show selected</button>
+<p>
+    <button type="button" onclick="setWinner('left')">Winner Left</button>
+    <button type="button" onclick="setWinner('right')">Winner Right</button>
+    <p>
+    <button type="button" onclick="setWinner('cancel')">Erase Winners</button>
 </body>
 </html>

@@ -24,6 +24,8 @@ public class ImageController {
 
     private String fighterLeft = "Nobody";
     private String fighterRight = "Nobody";
+    private boolean leftWins = false;
+    private boolean rightWins = false;
 
     @GetMapping(
             value = "/{name}",
@@ -48,7 +50,9 @@ public class ImageController {
         var response = new Images(
                 "background",
                 fighterLeft,
-                fighterRight
+                fighterRight,
+                leftWins,
+                rightWins
         );
         System.out.println("Returned " + response);
         return ResponseEntity.ok(objectMapper.writeValueAsString(response));
@@ -68,5 +72,24 @@ public class ImageController {
         System.out.println("Set left to " + fighterLeft + " and right to " + fighterRight);
         this.fighterLeft = fighterLeft;
         this.fighterRight = fighterRight;
+    }
+
+    @PostMapping(
+            value = "/winner/{winner}"
+    )
+    public void setWinner(@PathVariable String winner) {
+        switch (winner) {
+            case "left":
+                leftWins = true;
+                rightWins = false;
+                break;
+            case "right":
+                leftWins = false;
+                rightWins = true;
+                break;
+            case "cancel":
+                leftWins = false;
+                rightWins = false;
+        }
     }
 }
