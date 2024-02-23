@@ -24,6 +24,9 @@ public class CockpitController {
         var options = new ArrayList<>(Stream.of(file.listFiles())
                 .map(File::getName)
                 .map((name) -> name.substring(0, name.lastIndexOf(".")))
+                .filter(name -> !name.equalsIgnoreCase("Nobody")
+                        && !name.equalsIgnoreCase("background")
+                        && !name.equalsIgnoreCase("winner"))
                 .toList());
         model.addAttribute("options", options);
         return "cockpit";
