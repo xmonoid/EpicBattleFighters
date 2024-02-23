@@ -19,9 +19,10 @@ public class CockpitController {
 
     @GetMapping("/")
     public String cockpit(Model model) throws IOException {
-        var resource = resourceLoader.getResource("classpath:images");
+        var resource = resourceLoader.getResource("classpath:");
         var file = resource.getFile();
         var options = new ArrayList<>(Stream.of(file.listFiles())
+                .filter(File::isFile)
                 .map(File::getName)
                 .map((name) -> name.substring(0, name.lastIndexOf(".")))
                 .filter(name -> !name.equalsIgnoreCase("Nobody")

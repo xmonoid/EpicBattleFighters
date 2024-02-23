@@ -34,8 +34,9 @@ public class ImageController {
     public @ResponseBody byte[] getImage(@PathVariable String name) throws IOException {
         System.out.println("Requested " + name);
         try {
-            var resource = resourceLoader.getResource("classpath:images/" + name + ".png");
+            var resource = resourceLoader.getResource("classpath:" + name + ".png");
             var file = resource.getFile();
+            System.out.println("Trying to find the file " + file.getAbsolutePath());
             return IOUtils.toByteArray(file.toURI());
         } catch (FileNotFoundException e) {
             return null;
