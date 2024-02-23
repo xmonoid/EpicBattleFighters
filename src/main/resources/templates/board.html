@@ -35,14 +35,14 @@
             right: 30px;
             height: 70%;
         }
-        #left-winner {
+        .winner {
             position: absolute;
             top: 0px;
+        }
+        #left-winner {
             left: 0px;
         }
         #right-winner {
-            position: absolute;
-            top: 0px;
             right: 0px;
         }
     </style>
@@ -92,7 +92,7 @@
                 rightWinner.src = "image/Nobody"
             }
         }
-        setInterval(onLoad, 1000);
+        setInterval(onLoad, 800);
     </script>
 </head>
 <body onload="onLoad();">

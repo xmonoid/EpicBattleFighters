@@ -39,23 +39,23 @@
 </head>
 <body>
 <h1>Show fighter on the board</h1>
-<label for="fighterLeft">Choose the left fighter:</label>
-<select class="form-control" id="fighterLeft">
-    <option value="0">Nobody</option>
-    <option th:each="option : ${options}" th:value="${option}" th:text="${option}"></option>
-</select>
+    <label for="fighterLeft">Choose the left fighter:</label>
+    <select class="form-control" id="fighterLeft">
+        <option value="0">Nobody</option>
+        <option th:each="option : ${options}" th:value="${option}" th:text="${option}"></option>
+    </select>
 <p>
-<label for="fighterRight">Choose the right fighter:</label>
-<select class="form-control" id="fighterRight">
-    <option value="0">Nobody</option>
-    <option th:each="option : ${options}" th:value="${option}" th:text="${option}"></option>
-</select>
+    <label for="fighterRight">Choose the right fighter:</label>
+    <select class="form-control" id="fighterRight">
+        <option value="0">Nobody</option>
+        <option th:each="option : ${options}" th:value="${option}" th:text="${option}"></option>
+    </select>
 <p>
-<button type="button" onclick="setNewImages()">Show selected</button>
+    <button type="button" onclick="setNewImages()">Show selected</button>
 <p>
     <button type="button" onclick="setWinner('left')">Winner Left</button>
     <button type="button" onclick="setWinner('right')">Winner Right</button>
-    <p>
+<p>
     <button type="button" onclick="setWinner('cancel')">Erase Winners</button>
 </body>
 </html>
