@@ -4,22 +4,21 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.antares.model.Images;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
+
+import static org.antares.Application.getCurrentPath;
 
 @RestController
 @RequestMapping("/image")
 public class ImageController {
-
-    @Autowired
-    private ResourceLoader resourceLoader;
-
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private String fighterLeft = "Nobody";
@@ -31,11 +30,14 @@ public class ImageController {
             value = "/{name}",
             produces = MediaType.IMAGE_PNG_VALUE
     )
-    public @ResponseBody byte[] getImage(@PathVariable String name) throws IOException {
+    public @ResponseBody byte[] getImage(@PathVariable String name) throws IOException, URISyntaxException {
         System.out.println("Requested " + name);
+        if (name.equalsIgnoreCase("undefined")) {
+            return null;
+        }
         try {
-            var resource = resourceLoader.getResource("classpath:" + name + ".png");
-            var file = resource.getFile();
+            String path = getCurrentPath();
+            var file = new File(new ClassPathResource(path + name + ".png").getPath());
             System.out.println("Trying to find the file " + file.getAbsolutePath());
             return IOUtils.toByteArray(file.toURI());
         } catch (FileNotFoundException e) {
