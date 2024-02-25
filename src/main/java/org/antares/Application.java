@@ -14,19 +14,23 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
+    private static String currentPath;
+
     public static String getCurrentPath() throws URISyntaxException {
+        if (currentPath != null) {
+            return currentPath;
+        }
+
         var codeSource = Application.class.getProtectionDomain().getCodeSource();
         File jarFile;
 
         var location = codeSource.getLocation();
         if (location != null) {
             String path = location.getPath();
-            System.out.println("Location " + path);
             if (path.contains("nested:/")) {
                 path = path.substring(8);
                 path = path.substring(0, path.indexOf(".jar"));
                 path = path.substring(0, path.lastIndexOf("/"));
-                System.out.println("Corrected path: " + path);
                 jarFile = new File(path);
             } else {
                 jarFile = new File(location.toURI()).getParentFile();
@@ -38,6 +42,6 @@ public class Application {
             jarFilePath = URLDecoder.decode(jarFilePath, StandardCharsets.UTF_8);
             jarFile = new File(jarFilePath).getParentFile();
         }
-        return jarFile.getAbsolutePath() + File.separator;
+        return currentPath = jarFile.getAbsolutePath() + File.separator;
     }
 }

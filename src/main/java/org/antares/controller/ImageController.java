@@ -38,18 +38,17 @@ public class ImageController {
         try {
             String path = getCurrentPath();
             var file = new File(new ClassPathResource(path + name + ".png").getPath());
-            System.out.println("Trying to find the file " + file.getAbsolutePath());
             return IOUtils.toByteArray(file.toURI());
         } catch (FileNotFoundException e) {
             return null;
         }
     }
 
+    private Images previous;
     @GetMapping(
             value = "/list"
     )
     public ResponseEntity<String> getImageList() throws JsonProcessingException {
-        System.out.println("Requested a set of images");
         var response = new Images(
                 "background",
                 fighterLeft,
@@ -57,7 +56,10 @@ public class ImageController {
                 leftWins,
                 rightWins
         );
-        System.out.println("Returned " + response);
+        if (!response.equals(previous)) {
+            previous = response;
+            System.out.println("Returned " + response);
+        }
         return ResponseEntity.ok(objectMapper.writeValueAsString(response));
     }
 
@@ -72,7 +74,7 @@ public class ImageController {
         if (fighterRight == null || fighterRight.isBlank()) {
             fighterRight = "Nobody";
         }
-        System.out.println("Set left to " + fighterLeft + " and right to " + fighterRight);
+        System.out.println("left = '" + fighterLeft + "'" + System.lineSeparator() + "right = '" + fighterRight + "'");
         this.fighterLeft = fighterLeft;
         this.fighterRight = fighterRight;
     }
