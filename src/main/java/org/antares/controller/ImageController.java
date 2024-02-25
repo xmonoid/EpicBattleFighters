@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.antares.model.Images;
 import org.apache.commons.io.IOUtils;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +35,7 @@ public class ImageController {
         }
         try {
             String path = getCurrentPath();
-            var file = new File(new ClassPathResource(path + name + ".png").getPath());
+            var file = new File(path + name + ".png");
             return IOUtils.toByteArray(file.toURI());
         } catch (FileNotFoundException e) {
             return null;

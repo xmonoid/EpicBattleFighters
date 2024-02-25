@@ -16,7 +16,7 @@ public class Application {
 
     private static String currentPath;
 
-    public static String getCurrentPath() throws URISyntaxException {
+    public synchronized static String getCurrentPath() throws URISyntaxException {
         if (currentPath != null) {
             return currentPath;
         }
@@ -27,10 +27,14 @@ public class Application {
         var location = codeSource.getLocation();
         if (location != null) {
             String path = location.getPath();
+            System.out.println("path[0] = " + location);
             if (path.contains("nested:/")) {
-                path = path.substring(8);
+                path = path.substring(path.indexOf("/"));
+                System.out.println("path[1] = " + path);
                 path = path.substring(0, path.indexOf(".jar"));
+                System.out.println("path[2] = " + path);
                 path = path.substring(0, path.lastIndexOf("/"));
+                System.out.println("path[3] = " + path);
                 jarFile = new File(path);
             } else {
                 jarFile = new File(location.toURI()).getParentFile();
@@ -42,6 +46,8 @@ public class Application {
             jarFilePath = URLDecoder.decode(jarFilePath, StandardCharsets.UTF_8);
             jarFile = new File(jarFilePath).getParentFile();
         }
-        return currentPath = jarFile.getAbsolutePath() + File.separator;
+        currentPath = jarFile.getAbsolutePath() + File.separator;
+        System.out.println("currentPath = " + currentPath);
+        return currentPath;
     }
 }
