@@ -4,9 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Spring Demo Project</title>
+    <style>
+        * {
+<!--            border: 2px solid black;-->
+        }
+        div.container {
+        }
+        h1 {
+            text-align: center
+        }
+        div.parent {
+            display: flex;
+            justify-content: center;
+        }
+        div.fighter {
+            margin: 5px;
+            padding: 5px;
+        }
+        button {
+            margin: 5px;
+            text-align: center
+        }
+    </style>
     <script th:src="@{/js/jquery-3.7.1.min.js}" type="text/javascript"></script>
     <script type="text/javascript">
-        function setNewImage(who) {
+        function setFighter(who) {
             switch (who) {
                 case "left":
                     const leftSelect = document.getElementById("fighterLeft");
@@ -22,6 +44,12 @@
                         url: "image/change?right=" + right
                     });
                     break;
+                case "clean":
+                    document.getElementById("fighterLeft").value = 0;
+                    document.getElementById("fighterRight").value = 0;
+                    $.post({
+                        url: "image/change?left=Nobody&right=Nobody"
+                    });
             }
         }
         function setWinner(who) {
@@ -46,21 +74,34 @@
     </script>
 </head>
 <body>
-<h1>Show fighter on the board</h1>
-    <label for="fighterLeft">Left fighter:</label>
-    <select class="form-control" id="fighterLeft" onchange="setNewImage('left')">
-        <option value="0" selected>Nobody</option>
-        <option th:each="option : ${options}" th:value="${option}" th:text="${option}"></option>
-    </select>
-    <label for="fighterRight">Right fighter:</label>
-    <select class="form-control" id="fighterRight" onchange="setNewImage('right')">
-        <option value="0" selected>Nobody</option>
-        <option th:each="option : ${options}" th:value="${option}" th:text="${option}"></option>
-    </select>
-<p>
-    <button type="button" onclick="setWinner('left')">Winner Left</button>
-    <button type="button" onclick="setWinner('right')">Winner Right</button>
-<p>
-    <button type="button" onclick="setWinner('clean')">Erase Winners</button>
+<div class="container">
+    <h1>Изображения бойцов</h1>
+    <div class="parent">
+        <div class="fighter">
+            <label for="fighterLeft">Боец слева:</label>
+            <select class="form-control" id="fighterLeft" onchange="setFighter('left')">
+                <option value="0" selected>Пусто</option>
+                <option th:each="option : ${options}" th:value="${option}" th:text="${option}"></option>
+            </select>
+            <p>
+                <button type="button" onclick="setWinner('left')">Победитель слева</button>
+        </div>
+        <div class="fighter">
+            <label for="fighterRight">Боец справа:</label>
+            <select class="form-control" id="fighterRight" onchange="setFighter('right')">
+                <option value="0" selected>Пусто</option>
+                <option th:each="option : ${options}" th:value="${option}" th:text="${option}"></option>
+            </select>
+            <p>
+                <button type="button" onclick="setWinner('right')">Победитель справа</button>
+        </div>
+    </div>
+    <div class="parent">
+        <button id="clean-winners" type="button" onclick="setWinner('clean')">Убрать надпись победителя</button>
+    </div>
+    <div class="parent">
+        <button id="clean-fighters" type="button" onclick="setFighter('clean')">Убрать бойцов</button>
+    </div>
+</div>
 </body>
 </html>
