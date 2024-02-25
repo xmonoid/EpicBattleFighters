@@ -6,15 +6,23 @@
     <title>Spring Demo Project</title>
     <script th:src="@{/js/jquery-3.7.1.min.js}" type="text/javascript"></script>
     <script type="text/javascript">
-        function setNewImages() {
-            const leftSelect = document.getElementById("fighterLeft");
-            const left = leftSelect.options[leftSelect.selectedIndex].text;
-
-            const rightSelect = document.getElementById("fighterRight");
-            const right = rightSelect.options[rightSelect.selectedIndex].text;
-            $.post({
-                url: "image/change?left=" + left + "&right=" + right
-            });
+        function setNewImage(who) {
+            switch (who) {
+                case "left":
+                    const leftSelect = document.getElementById("fighterLeft");
+                    const left = leftSelect.options[leftSelect.selectedIndex].text;
+                    $.post({
+                        url: "image/change?left=" + left
+                    });
+                    break;
+                case "right":
+                    const rightSelect = document.getElementById("fighterRight");
+                    const right = rightSelect.options[rightSelect.selectedIndex].text;
+                    $.post({
+                        url: "image/change?right=" + right
+                    });
+                    break;
+            }
         }
         function setWinner(who) {
             switch (who) {
@@ -28,9 +36,9 @@
                         url: "image/winner/right"
                     });
                     break;
-                case "cancel":
+                case "clean":
                     $.post({
-                        url: "image/winner/cancel"
+                        url: "image/winner/clean"
                     });
                     break;
             }
@@ -39,23 +47,20 @@
 </head>
 <body>
 <h1>Show fighter on the board</h1>
-    <label for="fighterLeft">Choose the left fighter:</label>
-    <select class="form-control" id="fighterLeft">
-        <option value="0">Nobody</option>
+    <label for="fighterLeft">Left fighter:</label>
+    <select class="form-control" id="fighterLeft" onchange="setNewImage('left')">
+        <option value="0" selected>Nobody</option>
         <option th:each="option : ${options}" th:value="${option}" th:text="${option}"></option>
     </select>
-<p>
-    <label for="fighterRight">Choose the right fighter:</label>
-    <select class="form-control" id="fighterRight">
-        <option value="0">Nobody</option>
+    <label for="fighterRight">Right fighter:</label>
+    <select class="form-control" id="fighterRight" onchange="setNewImage('right')">
+        <option value="0" selected>Nobody</option>
         <option th:each="option : ${options}" th:value="${option}" th:text="${option}"></option>
     </select>
-<p>
-    <button type="button" onclick="setNewImages()">Show selected</button>
 <p>
     <button type="button" onclick="setWinner('left')">Winner Left</button>
     <button type="button" onclick="setWinner('right')">Winner Right</button>
 <p>
-    <button type="button" onclick="setWinner('cancel')">Erase Winners</button>
+    <button type="button" onclick="setWinner('clean')">Erase Winners</button>
 </body>
 </html>

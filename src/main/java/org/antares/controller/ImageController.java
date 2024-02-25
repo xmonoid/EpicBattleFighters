@@ -31,7 +31,6 @@ public class ImageController {
             produces = MediaType.IMAGE_PNG_VALUE
     )
     public @ResponseBody byte[] getImage(@PathVariable String name) throws IOException, URISyntaxException {
-        System.out.println("Requested " + name);
         if (name.equalsIgnoreCase("undefined")) {
             return null;
         }
@@ -66,17 +65,16 @@ public class ImageController {
     @PostMapping(
             value = "/change"
     )
-    public void setImageList(@RequestParam("left") String fighterLeft,
-                             @RequestParam("right") String fighterRight) {
-        if (fighterLeft == null || fighterLeft.isBlank()) {
-            fighterLeft = "Nobody";
+    public void setImageList(@RequestParam(value = "left", required = false) String left,
+                             @RequestParam(value = "right", required = false) String right) {
+        if (left != null) {
+            this.fighterLeft = left;
+            System.out.println("left = " + left);
         }
-        if (fighterRight == null || fighterRight.isBlank()) {
-            fighterRight = "Nobody";
+        if (right != null) {
+            this.fighterRight = right;
+            System.out.println("right = " + right);
         }
-        System.out.println("left = '" + fighterLeft + "'" + System.lineSeparator() + "right = '" + fighterRight + "'");
-        this.fighterLeft = fighterLeft;
-        this.fighterRight = fighterRight;
     }
 
     @PostMapping(
@@ -92,7 +90,7 @@ public class ImageController {
                 leftWins = false;
                 rightWins = true;
                 break;
-            case "cancel":
+            case "clean":
                 leftWins = false;
                 rightWins = false;
         }
