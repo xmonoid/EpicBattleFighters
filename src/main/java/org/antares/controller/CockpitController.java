@@ -31,6 +31,7 @@ public class CockpitController {
                 .filter(name -> !name.equalsIgnoreCase("nobody")
                         && !name.equalsIgnoreCase("background")
                         && !name.equalsIgnoreCase("winner"))
+                .sorted()
                 .toList());
         model.addAttribute("options", options);
         return "cockpit";
